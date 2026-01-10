@@ -2,6 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserBookDTO } from './dto/user-book.dto';
+import { BookService } from 'src/book/book.service';
+import { Book } from 'src/book/book.interface';
 
 @Controller('user')
 export class UserController {
@@ -10,6 +13,16 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Patch('add/book')
+  async addBook(@Body() addBookDto: UserBookDTO){
+    return await this.userService.addBook(addBookDto);
+  }
+
+  @Patch('remove/book')
+  async removeBook(@Body() removeBookDto: UserBookDTO){
+    return await this.userService.removeBook(removeBookDto);
   }
 
   @Get()
@@ -24,11 +37,13 @@ export class UserController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
   }
+
+  
 }
