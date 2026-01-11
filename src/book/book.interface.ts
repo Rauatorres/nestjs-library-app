@@ -1,5 +1,5 @@
 export interface Book {
     title: string;
-    categories: { name: string }[];
+    categories: string[];
     _id?: string;
 }

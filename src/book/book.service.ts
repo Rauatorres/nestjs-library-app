@@ -3,6 +3,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Model } from 'mongoose';
 import { Book } from './book.interface';
+import CategoryDto from './dto/category.dto';
 
 @Injectable()
 export class BookService {
@@ -27,5 +28,32 @@ export class BookService {
 
   remove(id: string) {
     return this.bookModel.findByIdAndDelete(id);
+  }
+
+  async addCategory(addCategoryDto: CategoryDto){
+    const book = await this.bookModel.findById(addCategoryDto.bookId);
+    const newBook = new this.bookModel(book);
+
+    for(let category of newBook.categories){
+      if(category == addCategoryDto.name){
+        throw new Error('já existe uma categoria com esse nome no livro');
+      }
+    }
+
+    newBook.categories.push(addCategoryDto.name);
+    return await newBook.save();
+  }
+
+  async removeCategory(removeCategoryDto: CategoryDto){
+    const book = await this.bookModel.findById(removeCategoryDto.bookId);
+    const newBook = new this.bookModel(book);
+
+    for(let category of newBook.categories){
+      if(category == removeCategoryDto.name){
+        newBook.categories.splice(newBook.categories.indexOf(category), 1);
+      }
+    }
+
+    return await newBook.save();
   }
 }
