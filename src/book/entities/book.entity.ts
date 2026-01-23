@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const BookSchema = new mongoose.Schema({
-    title: String,
-    categories: [],
+  name: String,
+  categories: [],
 });

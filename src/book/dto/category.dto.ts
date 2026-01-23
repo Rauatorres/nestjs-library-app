@@ -1,4 +1,4 @@
-export default class CategoryDto{
-    bookId: string;
-    name: string;
+export default class CategoryDto {
+  bookId: string;
+  name: string;
 }

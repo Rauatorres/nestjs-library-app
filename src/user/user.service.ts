@@ -34,16 +34,22 @@ export class UserService {
     if (res != null) {
       return {
         id: res._id,
-        name: res.name,
-        books: res.books,
       };
     } else {
       throw new Error('nome de usuário ou senha incorretos');
     }
   }
 
-  findOne(id: string) {
-    return this.userModel.findOne({ _id: id });
+  async findOne(id: string) {
+    const res = await this.userModel.findOne<User>({ _id: id }).exec();
+    if (res != null) {
+      return {
+        name: res.name,
+        books: res.books,
+      };
+    } else {
+      throw new Error('nome de usuário ou senha incorretos');
+    }
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

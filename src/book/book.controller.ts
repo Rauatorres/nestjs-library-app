@@ -1,3 +1,4 @@
+// eslint-disable-next-line prettier/prettier
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -14,7 +15,7 @@ export class BookController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.bookService.findAll();
   }
 
@@ -34,12 +35,12 @@ export class BookController {
   }
 
   @Patch('add/category')
-  addCategory(@Body() addCategoryDto: CategoryDto){
+  addCategory(@Body() addCategoryDto: CategoryDto) {
     return this.bookService.addCategory(addCategoryDto);
   }
 
   @Patch('remove/category')
-  removeCategory(@Body() removeCategoryDto: CategoryDto){
+  removeCategory(@Body() removeCategoryDto: CategoryDto) {
     return this.bookService.removeCategory(removeCategoryDto);
   }
 }

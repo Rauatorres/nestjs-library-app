@@ -1,4 +1,4 @@
-export class UserBookDTO{
-    userId: string;
-    bookId: string;
-};
+export class UserBookDTO {
+  userId: string;
+  bookId: string;
+}

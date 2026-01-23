@@ -11,6 +11,7 @@ export class BookService {
 
   create(createBookDto: CreateBookDto) {
     const newBook = new this.bookModel(createBookDto);
+    console.log(createBookDto);
     return newBook.save();
   }
 
@@ -30,12 +31,12 @@ export class BookService {
     return this.bookModel.findByIdAndDelete(id);
   }
 
-  async addCategory(addCategoryDto: CategoryDto){
+  async addCategory(addCategoryDto: CategoryDto) {
     const book = await this.bookModel.findById(addCategoryDto.bookId);
     const newBook = new this.bookModel(book);
 
-    for(let category of newBook.categories){
-      if(category == addCategoryDto.name){
+    for (const category of newBook.categories) {
+      if (category == addCategoryDto.name) {
         throw new Error('já existe uma categoria com esse nome no livro');
       }
     }
@@ -44,12 +45,12 @@ export class BookService {
     return await newBook.save();
   }
 
-  async removeCategory(removeCategoryDto: CategoryDto){
+  async removeCategory(removeCategoryDto: CategoryDto) {
     const book = await this.bookModel.findById(removeCategoryDto.bookId);
     const newBook = new this.bookModel(book);
 
-    for(let category of newBook.categories){
-      if(category == removeCategoryDto.name){
+    for (const category of newBook.categories) {
+      if (category == removeCategoryDto.name) {
         newBook.categories.splice(newBook.categories.indexOf(category), 1);
       }
     }
