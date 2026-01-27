@@ -78,11 +78,13 @@ export class UserService {
 
   async removeBook(userBookDto: UserBookDTO) {
     const { userId, bookId } = userBookDto;
-    const book: Book | null = await this.bookService.findOne(bookId);
     const user = await this.userModel.findOne({ _id: userId });
     const updatedUser = new this.userModel(user);
 
-    updatedUser.books.splice(updatedUser.books.indexOf(book!), 1);
+    // eslint-disable-next-line prettier/prettier
+    updatedUser.books = updatedUser.books.filter(listBook => {
+      return listBook._id != bookId;
+    });
     return await updatedUser.save();
   }
 }

@@ -11,7 +11,6 @@ export class BookService {
 
   create(createBookDto: CreateBookDto) {
     const newBook = new this.bookModel(createBookDto);
-    console.log(createBookDto);
     return newBook.save();
   }
 
