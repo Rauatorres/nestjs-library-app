@@ -1,3 +1,3 @@
 export class CreateBookDto {
-    name: string
+  title: string;
 }

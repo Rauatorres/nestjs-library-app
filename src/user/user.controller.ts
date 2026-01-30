@@ -3,7 +3,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserBookDTO } from './dto/user-book.dto';
+// import { UserBookDTO } from './dto/user-book.dto';
+import { EditBookDTO } from './dto/edit-book.dto';
+import { CreateBookDTO } from './dto/create-book.dto';
+import { DeleteBookDTO } from './dto/delete-book.dto';
 
 @Controller('user')
 export class UserController {
@@ -14,14 +17,22 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Patch('add/book')
-  async addBook(@Body() addBookDto: UserBookDTO) {
-    return await this.userService.addBook(addBookDto);
+  @Patch(':id/add/book')
+  async addBook(@Param('id') id: string, @Body() addBookDto: CreateBookDTO) {
+    return await this.userService.addBook(id, addBookDto);
   }
 
-  @Patch('remove/book')
-  async removeBook(@Body() removeBookDto: UserBookDTO) {
-    return await this.userService.removeBook(removeBookDto);
+  @Patch(':id/remove/book')
+  async removeBook(
+    @Param('id') id: string,
+    @Body() deleteBookDto: DeleteBookDTO,
+  ) {
+    return await this.userService.removeBook(id, deleteBookDto);
+  }
+
+  @Patch(':id/edit/book')
+  async editBook(@Param('id') id: string, @Body() editBookDto: EditBookDTO) {
+    return await this.userService.editBook(id, editBookDto);
   }
 
   @Get()
@@ -30,8 +41,9 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const res = await this.userService.findOneById(id);
+    return res;
   }
 
   @Post('login')

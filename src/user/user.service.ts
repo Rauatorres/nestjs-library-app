@@ -6,7 +6,10 @@ import { User } from './user.interface';
 import { createHash } from 'node:crypto';
 import { BookService } from 'src/book/book.service';
 import { Book } from 'src/book/book.interface';
-import { UserBookDTO } from './dto/user-book.dto';
+// import { UserBookDTO } from './dto/user-book.dto';
+import { EditBookDTO } from './dto/edit-book.dto';
+import { CreateBookDTO } from './dto/create-book.dto';
+import { DeleteBookDTO } from './dto/delete-book.dto';
 
 @Injectable()
 export class UserService {
@@ -40,8 +43,8 @@ export class UserService {
     }
   }
 
-  async findOne(id: string) {
-    const res = await this.userModel.findOne<User>({ _id: id }).exec();
+  async findOneById(id: string) {
+    const res = await this.userModel.findById<User>(id).exec();
     if (res != null) {
       return {
         name: res.name,
@@ -60,31 +63,52 @@ export class UserService {
     return this.userModel.findByIdAndDelete(id);
   }
 
-  async addBook(userBookDto: UserBookDTO) {
-    const { userId, bookId } = userBookDto;
-    const book: Book | null = await this.bookService.findOne(bookId);
+  async addBook(userId: string, createBookDto: CreateBookDTO) {
     const user = await this.userModel.findOne({ _id: userId });
-    const updatedUser = new this.userModel(user);
-
-    for (const bookElement of user!.books) {
-      if (bookElement._id?.toString() == book!._id?.toString()) {
-        throw new Error('o livro já está na lista do usuário!');
-      }
+    const book: Book = { title: createBookDto.title, categories: [] };
+    if (user != undefined) {
+      user.books.push(book);
+      return user.save();
+    } else {
+      throw new Error('usuário não encontrado');
     }
-
-    updatedUser.books.push(book!);
-    return await updatedUser.save();
   }
 
-  async removeBook(userBookDto: UserBookDTO) {
-    const { userId, bookId } = userBookDto;
+  async removeBook(userId: string, deleteBookDto: DeleteBookDTO) {
     const user = await this.userModel.findOne({ _id: userId });
-    const updatedUser = new this.userModel(user);
 
-    // eslint-disable-next-line prettier/prettier
-    updatedUser.books = updatedUser.books.filter(listBook => {
-      return listBook._id != bookId;
-    });
-    return await updatedUser.save();
+    if (user != undefined) {
+      const deletedBook = user.books.find(
+        (book) => book._id == deleteBookDto.bookId,
+      );
+      if (deletedBook != undefined) {
+        user.books.splice(user.books.indexOf(deletedBook), 1);
+        return user.save();
+      } else {
+        throw new Error('livro não encontrado');
+      }
+    } else {
+      throw new Error('usuário não encontrado');
+    }
+  }
+
+  async editBook(userId: string, editBookDto: EditBookDTO) {
+    const user = await this.userModel.findOne({ _id: userId });
+    if (user != undefined) {
+      const editedBook = user.books.find(
+        (book) => book._id == editBookDto.bookId,
+      );
+      if (editedBook != undefined) {
+        user.books.splice(user.books.indexOf(editedBook), 1, {
+          ...editedBook,
+          title: editBookDto.title,
+        });
+        return user.save();
+      } else {
+        throw new Error('livro não encontrado');
+      }
+    } else {
+      throw new Error('usuário não encontrado');
+    }
   }
 }

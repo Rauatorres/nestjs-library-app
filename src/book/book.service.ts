@@ -10,7 +10,7 @@ export class BookService {
   constructor(@Inject('BOOK_MODEL') private bookModel: Model<Book>) {}
 
   create(createBookDto: CreateBookDto) {
-    const newBook = new this.bookModel(createBookDto);
+    const newBook = new this.bookModel('Book', createBookDto);
     return newBook.save();
   }
 
@@ -22,8 +22,10 @@ export class BookService {
     return this.bookModel.findById(id);
   }
 
-  update(id: string, updateBookDto: UpdateBookDto) {
-    return this.bookModel.findByIdAndUpdate(id, updateBookDto);
+  async update(id: string, updateBookDto: UpdateBookDto) {
+    const res = await this.bookModel.findByIdAndUpdate(id, updateBookDto);
+    console.log(res);
+    return res;
   }
 
   remove(id: string) {
