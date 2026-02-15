@@ -3,13 +3,12 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { userProviders } from './user.providers';
 import { DatabaseModule } from 'src/database/database.module';
-import { BookModule } from 'src/book/book.module';
-import { BookService } from 'src/book/book.service';
-import { booksProviders } from 'src/book/book.providers';
+import { CategoryModule } from 'src/category/category.module';
+import { categoryProviders } from 'src/category/category.providers';
 
 @Module({
-  imports: [DatabaseModule, BookModule],
+  imports: [DatabaseModule, CategoryModule],
   controllers: [UserController],
-  providers: [UserService, BookService, ...userProviders, ...booksProviders],
+  providers: [UserService, ...userProviders, ...categoryProviders],
 })
 export class UserModule {}

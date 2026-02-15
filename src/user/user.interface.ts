@@ -1,8 +1,8 @@
-import { Book } from 'src/book/book.interface';
+import { Category } from 'src/category/category.interface';
 
 export interface User {
-  _id?: string;
+  _id: string;
   name: string;
   password: string;
-  books: Book[];
+  categories: Category[];
 }

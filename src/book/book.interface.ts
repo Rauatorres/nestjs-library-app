@@ -1,5 +1,7 @@
 export interface Book {
-    title: string;
-    categories: string[];
-    _id?: string;
+  title: string;
+  author?: string;
+  description?: string;
+  file?: string;
+  category: string;
 }
