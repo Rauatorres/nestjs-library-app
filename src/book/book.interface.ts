@@ -4,4 +4,5 @@ export interface Book {
   description?: string;
   file?: string;
   category: string;
+  user: string;
 }

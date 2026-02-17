@@ -4,5 +4,4 @@ export interface Category {
   _id?: string;
   name: string;
   categories: Category[];
-  // books: Book[];
 }

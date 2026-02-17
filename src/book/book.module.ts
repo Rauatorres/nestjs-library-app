@@ -5,10 +5,16 @@ import { bookProviders } from './book.providers';
 import { DatabaseModule } from 'src/database/database.module';
 import { CategoryModule } from 'src/category/category.module';
 import { categoryProviders } from 'src/category/category.providers';
+import { userProviders } from 'src/user/user.providers';
 
 @Module({
   imports: [DatabaseModule, CategoryModule],
   controllers: [BookController],
-  providers: [BookService, ...bookProviders, ...categoryProviders],
+  providers: [
+    BookService,
+    ...bookProviders,
+    ...categoryProviders,
+    ...userProviders,
+  ],
 })
 export class BookModule {}

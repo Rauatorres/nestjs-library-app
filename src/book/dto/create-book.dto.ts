@@ -4,4 +4,5 @@ export class CreateBookDto {
   description?: string;
   file?: string;
   category: string;
+  user: string;
 }
