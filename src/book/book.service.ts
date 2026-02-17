@@ -4,6 +4,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { Model } from 'mongoose';
 import { Book } from './book.interface';
 import { Category } from 'src/category/category.interface';
+import { FindManyBooksDto } from './dto/find-many-books.dto';
 
 @Injectable()
 export class BookService {
@@ -26,6 +27,10 @@ export class BookService {
 
   async findOne(book: Partial<Book>) {
     return await this.bookModel.findOne(book);
+  }
+
+  async findMany(data: FindManyBooksDto) {
+    return await this.bookModel.find(data);
   }
 
   async update(id: string, updateBookDto: UpdateBookDto) {

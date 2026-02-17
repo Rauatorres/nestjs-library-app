@@ -42,4 +42,9 @@ export class CategoryController {
   remove(@Param('id') id: string) {
     return this.categoryService.remove(id);
   }
+
+  @Get('tree/:topCategoryId')
+  async getTree(@Param('topCategoryId') topCategoryId: string) {
+    return await this.categoryService.tree(topCategoryId);
+  }
 }

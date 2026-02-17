@@ -4,12 +4,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.interface';
 import { Model } from 'mongoose';
 import { Category } from 'src/category/category.interface';
+import { BookService } from 'src/book/book.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject('USER_MODEL') private userModel: Model<User>,
     @Inject('CATEGORY_MODEL') private categoryModel: Model<Category>,
+    private bookService: BookService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {

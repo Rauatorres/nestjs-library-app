@@ -10,6 +10,7 @@ import {
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { FindManyBooksDto } from './dto/find-many-books.dto';
 
 @Controller('book')
 export class BookController {
@@ -28,6 +29,11 @@ export class BookController {
   @Get(':id')
   findOneById(@Param('id') id: string) {
     return this.bookService.findOneById(id);
+  }
+
+  @Get('many')
+  findMany(@Body() data: FindManyBooksDto) {
+    return this.bookService.findMany(data);
   }
 
   @Patch(':id')
